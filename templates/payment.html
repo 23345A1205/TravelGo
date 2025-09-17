@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Confirm and Pay - TravelGo{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h5 class="mb-0">Confirm and Pay</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4 p-3 border rounded bg-light">
+                        <p class="mb-1"><strong>Route:</strong>
+                            {% if booking %}{{ booking.destination }}{% else %}{{ preview.destination }}{% endif %}
+                        </p>
+                        <p class="mb-1"><strong>Date:</strong>
+                            {% if booking %}{{ booking.travel_date.strftime('%Y-%m-%d') }}{% else %}{{ preview.travel_date }}{% endif %}
+                        </p>
+                        <p class="mb-1"><strong>Seats:</strong>
+                            {% if booking %}{{ booking.passengers }}{% else %}{{ preview.passengers }}{% endif %}
+                        </p>
+                        <p class="mb-0"><strong>Total Price:</strong>
+                            ₹{% if booking %}{{ '%.2f'|format(booking.total_price) }}{% else %}{{ '%.2f'|format(preview.total_price) }}{% endif %}
+                        </p>
+                    </div>
+
+                    <form action="{{ url_for('payment_confirm') }}" method="POST">
+                        {% if booking %}
+                        <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method:</label>
+                            <select class="form-select" required>
+                                <option value="">-- Select Payment Method --</option>
+                                <option>UPI</option>
+                                <option>Credit Card</option>
+                                <option>Debit Card</option>
+                                <option>Net Banking</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Transaction Reference:</label>
+                            <input type="text" class="form-control" placeholder="Enter transaction/reference ID" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            Pay ₹{% if booking %}{{ '%.0f'|format(booking.total_price) }}{% else %}{{ '%.0f'|format(preview.total_price) }}{% endif %}
+                        </button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('home') }}">— Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Confirmed - TravelGo{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <h5 class="mb-0">Booking Confirmed</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success" role="alert">
+                        Payment successful! Your booking is confirmed.
+                    </div>
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item d-flex justify-content-between"><span>Destination</span><strong>{{ booking.destination }}</strong></li>
+                        <li class="list-group-item d-flex justify-content-between"><span>Date</span><strong>{{ booking.travel_date.strftime('%Y-%m-%d') }}</strong></li>
+                        <li class="list-group-item d-flex justify-content-between"><span>Passengers</span><strong>{{ booking.passengers }}</strong></li>
+                        <li class="list-group-item d-flex justify-content-between"><span>Total Paid</span><strong>₹{{ '%.2f'|format(booking.total_price) }}</strong></li>
+                        <li class="list-group-item d-flex justify-content-between"><span>Status</span><span class="badge bg-success">Confirmed</span></li>
+                    </ul>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">Back to Home</a>
+                        <a href="{{ url_for('my_bookings') }}" class="btn btn-primary">View My Bookings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

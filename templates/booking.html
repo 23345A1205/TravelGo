@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Book Your Trip - TravelGo{% endblock %}
+
+{% block content %}
+<div class="booking-bg">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i id="categoryIcon" class="fas fa-calendar-plus me-2"></i>Book Your Travel
+                    </h3>
+                </div>
+                <div class="card-body p-5">
+                    <form method="POST" id="bookingForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="category" class="form-label">Category</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-list"></i>
+                                    </span>
+                                    <select class="form-select" id="category" name="category" required>
+                                        <option value="">Choose category...</option>
+                                        <option value="train">Train</option>
+                                        <option value="bus">Bus</option>
+                                        <option value="flight">Flight</option>
+                                        <option value="hotel">Hotel</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="origin" class="form-label">From (Current Location)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-location-arrow"></i>
+                                    </span>
+                                    <select class="form-select" id="origin" name="origin" required>
+                                        <option value="">Choose origin...</option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Mumbai">Mumbai</option>
+                                        <option value="Bengaluru">Bengaluru</option>
+                                        <option value="Kolkata">Kolkata</option>
+                                        <option value="Chennai">Chennai</option>
+                                        <option value="Hyderabad">Hyderabad</option>
+                                        <option value="Jaipur">Jaipur</option>
+                                        <option value="Goa">Goa</option>
+                                        <option value="Kochi">Kochi</option>
+                                        <option value="Varanasi">Varanasi</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="destination" class="form-label">Destination</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </span>
+                                    <select class="form-select" id="destination" name="destination" required>
+                                        <option value="">Choose destination...</option>
+                                        <option value="Delhi">Delhi - From ₹499</option>
+                                        <option value="Mumbai">Mumbai - From ₹599</option>
+                                        <option value="Bengaluru">Bengaluru - From ₹549</option>
+                                        <option value="Kolkata">Kolkata - From ₹499</option>
+                                        <option value="Chennai">Chennai - From ₹549</option>
+                                        <option value="Hyderabad">Hyderabad - From ₹549</option>
+                                        <option value="Jaipur">Jaipur - From ₹449</option>
+                                        <option value="Goa">Goa - From ₹699</option>
+                                        <option value="Kochi">Kochi - From ₹599</option>
+                                        <option value="Varanasi">Varanasi - From ₹499</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="travel_date" class="form-label">Travel Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </span>
+                                    <input type="date" class="form-control" id="travel_date" name="travel_date" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3" id="passengersGroup">
+                                <label for="passengers" class="form-label">Number of Passengers</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-users"></i>
+                                    </span>
+                                    <select class="form-select" id="passengers" name="passengers" required>
+                                        <option value="">Select passengers...</option>
+                                        <option value="1">1 Passenger</option>
+                                        <option value="2">2 Passengers</option>
+                                        <option value="3">3 Passengers</option>
+                                        <option value="4">4 Passengers</option>
+                                        <option value="5">5 Passengers</option>
+                                        <option value="6">6+ Passengers</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3 d-none" id="hotelNameGroup">
+                                <label for="hotel_name" class="form-label">Hotel Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-hotel"></i>
+                                    </span>
+                                    <input type="text" class="form-control" id="hotel_name" name="hotel_name" placeholder="Enter hotel name">
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="travel_class" class="form-label">Travel Class</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-plane"></i>
+                                    </span>
+                                    <select class="form-select" id="travel_class" name="travel_class">
+                                        <option value="economy">Economy Class</option>
+                                        <option value="business">Business Class</option>
+                                        <option value="first">First Class</option>
+                                    </select>
+                                </div>                                                                                              
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="special_requests" class="form-label">Special Requests (Optional)</label>
+                            <textarea class="form-control" id="special_requests" name="special_requests" rows="3" placeholder="Any special requirements or requests..."></textarea>
+                        </div>
+                        
+                        <!-- Price Summary -->
+                        <div class="card bg-light mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-calculator me-2"></i>Price Summary
+                                </h5>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p class="mb-1">Base Price (per person):</p>
+                                        <p class="mb-1">Number of Passengers:</p>
+                                        <p class="mb-1">Travel Class:</p>
+                                        <hr>
+                                        <p class="mb-0 fw-bold">Total Price:</p>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <p class="mb-1" id="basePriceValue">₹500</p>
+                                        <p class="mb-1" id="passengerCount">-</p>
+                                        <p class="mb-1" id="classMultiplier">Economy (1x)</p>
+                                        <hr>
+                                        <p class="mb-0 fw-bold text-primary" id="totalPrice">₹0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('home') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Home
+                            </a>
+                            <button type="submit" formaction="{{ url_for('payment') }}" formmethod="post" class="btn btn-success btn-lg">
+                                <i class="fas fa-credit-card me-2"></i>Proceed to Payment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

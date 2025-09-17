@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings - TravelGo{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="display-5 fw-bold">
+                    <i class="fas fa-calendar-check me-2"></i>My Bookings
+                </h2>
+                <a href="{{ url_for('booking') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>New Booking
+                </a>
+            </div>
+            
+            {% if bookings %}
+                <div class="row g-4">
+                    {% for booking in bookings %}
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h5 class="card-title mb-0">{{ booking.destination }}</h5>
+                                    <span class="badge bg-{{ 'success' if booking.status == 'confirmed' else 'warning' }}">
+                                        {{ booking.status.title() }}
+                                    </span>
+                                </div>
+                                
+                                <div class="row g-3 mb-3">
+                                    <div class="col-6">
+                                        <div class="booking-detail">
+                                            <i class="fas fa-calendar text-primary me-2"></i>
+                                            <strong>Travel Date:</strong><br>
+                                            <span class="text-muted">{{ booking.travel_date.strftime('%B %d, %Y') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="booking-detail">
+                                            <i class="fas fa-users text-primary me-2"></i>
+                                            <strong>Passengers:</strong><br>
+                                            <span class="text-muted">{{ booking.passengers }} {{ 'person' if booking.passengers == 1 else 'people' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row g-3 mb-3">
+                                    <div class="col-6">
+                                        <div class="booking-detail">
+                                            <i class="fas fa-dollar-sign text-primary me-2"></i>
+                                            <strong>Total Price:</strong><br>
+                                            <span class="text-success fw-bold">${{ "%.2f"|format(booking.total_price) }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="booking-detail">
+                                            <i class="fas fa-clock text-primary me-2"></i>
+                                            <strong>Booked On:</strong><br>
+                                            <span class="text-muted">{{ booking.booking_date.strftime('%B %d, %Y') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="printBooking({{ booking.id }})">
+                                        <i class="fas fa-print me-1"></i>Print
+                                    </button>
+                                    <button class="btn btn-outline-info btn-sm" onclick="viewDetails({{ booking.id }})">
+                                        <i class="fas fa-eye me-1"></i>Details
+                                    </button>
+                                    {% if booking.status == 'confirmed' %}
+                                    <button class="btn btn-outline-warning btn-sm" onclick="modifyBooking({{ booking.id }})">
+                                        <i class="fas fa-edit me-1"></i>Modify
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-calendar-times fa-5x text-muted mb-4"></i>
+                    <h3 class="text-muted">No Bookings Yet</h3>
+                    <p class="text-muted mb-4">You haven't made any bookings yet. Start planning your next adventure!</p>
+                    <a href="{{ url_for('booking') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>Make Your First Booking
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Booking Details Modal -->
+<div class="modal fade" id="bookingDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Booking Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="bookingDetailsContent">
+                <!-- Content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printBooking()">
+                    <i class="fas fa-print me-1"></i>Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
